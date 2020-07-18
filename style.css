@@ -95,3 +95,48 @@ button.served:hover {
 	background-color: hsl(8, 85%, 50%);
 	color: white;
 }
+
+.modal-outer {
+	display: grid;
+	background-color: rgba(195, 215, 245, 1);
+	position: fixed;
+	height: 100vh;
+	width: 100vw;
+	top: 0;
+	left: 0;
+	justify-content: center;
+	align-items: center;
+	/* Hide this modal until we need it */
+	opacity: 0;
+	pointer-events: none;
+	transition: opacity 0.2s;
+}
+
+
+.modal-outer.open {
+	opacity: 1;
+	pointer-events: all;
+}
+
+.modal-inner {
+	max-width: 600px;
+	min-width: 400px;
+	padding: 2rem;
+	border-radius: 5px;
+	min-height: 200px;
+	background: white;
+	transition: transform 0.2s;
+}
+
+form {
+	width: 30rem;
+	height: 30rem;
+	text-align: center;
+	background-color: mintcream;
+	border: 2px solid navy;
+	border-radius: 10px;
+}
+
+.submitOrder {
+	transform: translateX(115%);
+}
