@@ -37,21 +37,13 @@ window.addEventListener('keydown', (event) => {
 });
 
 
-// To delete the order.
-// const deleteList = (event) => {
-//     if ($event.target.classList.includes('served')) {
-//         const deleteBtn = $event.target;
-//         deleteBtn.closest('.order-list').remove();
-//     }
-// };
-
-// deleteButton.addEventListener('click', deleteList);
 
 // Grab those element that might be relateted to the form.
 const form = document.querySelector('form');
 const name = document.querySelector('#name');
 const select = document.querySelector('select-form');
-const amount = document.querySelector('#quantity');
+const amount = document.querySelector('[type="radio"]');
+const quantity = document.querySelector('#quantity');
 const submitButton = document.querySelector('.submitOrder');
 
 // To add the new order.
@@ -70,9 +62,44 @@ const newOrderList = (event) => {
     orderList.insertAdjacentHTML('beforeend', newOrder);
 
     modalOuter.classList.remove('open');
+
+    form.reset();
 };
 
+// Add an event listener to the submit button for it to submit the completed form.
 submitButton.addEventListener('click', newOrderList);
+
+
+// Added an event listener to the detail buton to show the order information.
+const orderInfo = (event) => {
+    event.preventDefault();
+    const myHTML = `
+    <div class="order-list">
+    <div class="order">
+        <span>${name.value}</span>
+        <p>Order:</p>
+        <span>${quantity.value} ${amount.value} ${select.value}</span>
+    </div>
+</div>
+    `;
+    orderList.insertAdjacentHTML('beforeend', myHTML);
+    modalOuter.classList.add('open');
+}
+
+detailsButton.addEventListener('click', orderInfo);
+
+// // To delete the order.
+const deleteList = (event) => {
+    if (event.target.classList.contains('served')) {
+        const deleteBtn = event.target;
+        deleteBtn.closest('.order-list').remove();
+    }
+};
+
+deleteButton.addEventListener('click', deleteList);
+
+
+
 
 
 
