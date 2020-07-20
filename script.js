@@ -78,12 +78,8 @@ window.addEventListener('keydown', (event) => {
     }
 });
 
-// const handleSubmit = (event) => {
-    
 
-//     // form.reset();
-// };
-
+// Added an event listener to the window for the form's submit button.
 window.addEventListener('submit', (event) => {
     event.preventDefault();
     if (event.target.matches('form')) {
@@ -92,7 +88,6 @@ window.addEventListener('submit', (event) => {
         const dish = form.dish.value;
         const size = form.size.value;
         const amount = form.amount.value;
-        // const name = document.querySelector('#name');
 
         const newOrder = `
         <div class="order-list">
@@ -104,25 +99,23 @@ window.addEventListener('submit', (event) => {
         </div>
         `;
 
-        event.target = newOrder;
-        orderList.insertAdjacentHTML("afterbegin", newOrder);
+        orderList.insertAdjacentHTML("beforeend", newOrder);
         modalOuter.classList.remove('open');
+        form.reset();
     }
-
 });
 
 
-
-
-
 // Added an event listener to the detail buton to show the order information.
-const orderInfo = (event) => {
-    if (event.target.matches('form')) {
+detailsButton.addEventListener('click', (event) => {
+    event.preventDefault();
+    if (event.target.matches('.details')) {
         const form = event.target;
         const name = form.name.value;
         const dish = form.dish.value;
         const size = form.size.value;
         const amount = form.amount.value;
+
         const myHTML = `
         <div class="order-list">
             <div class="order">
@@ -132,16 +125,14 @@ const orderInfo = (event) => {
             </div>
         </div>
         `;
-        event.target = myHTML;
+
         orderList.insertAdjacentHTML('beforeend', myHTML);
         modalOuter.classList.add('open');
+        console.log(myHTML);
     }
-    event.preventDefault();
-}
+});
 
-detailsButton.addEventListener('click', orderInfo);
-
-// To delete the order.
+// A function for deleting the order.
 const deleteList = (event) => {
     if (event.target.classList.contains('served')) {
         const deleteBtn = event.target;
@@ -149,4 +140,5 @@ const deleteList = (event) => {
     }
 };
 
+// An event listener for the delete button.
 deleteButton.addEventListener('click', deleteList);
