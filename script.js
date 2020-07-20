@@ -12,6 +12,48 @@ const modalInner = document.querySelector('.modal-inner');
 
 // A function that is needed for adding the open class to the outer modal.
 const openModal = (event) => {
+    modalInner.innerHTML = `
+    <form>
+        <p>Your name :</p>
+        <input
+            class="input-form"
+            type="text"
+            id="name"
+            name="name"
+            placeholder="Enter your name here"
+            required
+        />
+        <p>Please select your dish :</p>
+        <select name="dish" class="select-form" required>
+            <option value="romazava">Romazava</option>
+            <option value="koba">Koba</option>
+            <option value="ravitoto">Ravitoto</option>
+            <option value="mokary">Mokary</option>
+            <option value="achard">Achard</option>
+            <option value="masikita">Masikita</option>
+            <option value="sambos">Sambos</option>
+            <option value="mofo-baolina">Mofo baolina</option>
+            <option value="ranonapango">Ranonapango</option>
+        </select>
+        <p>Please select the size of your plate :</p>
+        <input type="radio" id="small" name="size" value="small" required />
+        <label for="small">Small</label><br />
+        <input type="radio" id="medium" name="size" value="medium" />
+        <label for="medium">Medium</label><br />
+        <input type="radio" id="large" name="size" value="large" />
+        <label for="large">Large</label><br />
+        <p>How many pieces do you want to order?</p>
+        <input
+            class="input-form"
+            type="number"
+            id="quantity"
+            name="amount"
+            placeholder="Enter a number here"
+            required
+        />
+        <button class="submitOrder" type="submit">Add this order</button>
+    </form>
+    `;
     modalOuter.classList.add('open');
 };
 
@@ -36,59 +78,70 @@ window.addEventListener('keydown', (event) => {
     }
 });
 
+// const handleSubmit = (event) => {
+    
 
+//     // form.reset();
+// };
 
-// Grab those element that might be relateted to the form.
-const form = document.querySelector('form');
-const name = document.querySelector('#name');
-const select = document.querySelector('select-form');
-const amount = document.querySelector('[type="radio"]');
-const quantity = document.querySelector('#quantity');
-const submitButton = document.querySelector('.submitOrder');
-
-// To add the new order.
-const newOrderList = (event) => {
+window.addEventListener('submit', (event) => {
     event.preventDefault();
-    const newOrder = `
-    <div class="order-list">
-        <div class="order">
-            <span class="title">${name.value}</span>
-            <button class="details">Details</button>
-            <button class="served">Delete order</button>
+    if (event.target.matches('form')) {
+        const form = event.target;
+        const name = form.name.value;
+        const dish = form.dish.value;
+        const size = form.size.value;
+        const amount = form.amount.value;
+        // const name = document.querySelector('#name');
+
+        const newOrder = `
+        <div class="order-list">
+            <div class="order">
+                <span class="title">${name}</span>
+                <button class="details">Details</button>
+                <button class="served">Delete order</button>
+            </div>
         </div>
-    </div>
-    `;
+        `;
 
-    orderList.insertAdjacentHTML('beforeend', newOrder);
+        event.target = newOrder;
+        orderList.insertAdjacentHTML("afterbegin", newOrder);
+        modalOuter.classList.remove('open');
+    }
 
-    modalOuter.classList.remove('open');
+});
 
-    form.reset();
-};
 
-// Add an event listener to the submit button for it to submit the completed form.
-submitButton.addEventListener('click', newOrderList);
+
 
 
 // Added an event listener to the detail buton to show the order information.
 const orderInfo = (event) => {
+    if (event.target.matches('form')) {
+        const form = event.target;
+        const name = form.name.value;
+        const dish = form.dish.value;
+        const size = form.size.value;
+        const amount = form.amount.value;
+        const myHTML = `
+        <div class="order-list">
+            <div class="order">
+                <span>${name}</span>
+                <p>Order:</p>
+                <span>${size} ${amount} ${dish}</span>
+            </div>
+        </div>
+        `;
+        event.target = myHTML;
+        orderList.insertAdjacentHTML('beforeend', myHTML);
+        modalOuter.classList.add('open');
+    }
     event.preventDefault();
-    const myHTML = `
-    <div class="order-list">
-    <div class="order">
-        <span>${name.value}</span>
-        <p>Order:</p>
-        <span>${quantity.value} ${amount.value} ${select.value}</span>
-    </div>
-</div>
-    `;
-    orderList.insertAdjacentHTML('beforeend', myHTML);
-    modalOuter.classList.add('open');
 }
 
 detailsButton.addEventListener('click', orderInfo);
 
-// // To delete the order.
+// To delete the order.
 const deleteList = (event) => {
     if (event.target.classList.contains('served')) {
         const deleteBtn = event.target;
@@ -97,10 +150,3 @@ const deleteList = (event) => {
 };
 
 deleteButton.addEventListener('click', deleteList);
-
-
-
-
-
-
-
