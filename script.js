@@ -91,7 +91,7 @@ window.addEventListener('submit', (event) => {
 
         const newOrder = `
         <div class="order-list">
-            <div class="order">
+            <div class="order data-dish="${dish}" data-size="${size}" data-name="${name} data-amount="${amount}">
                 <span class="title">${name}</span>
                 <button class="details">Details</button>
                 <button class="served">Delete order</button>
@@ -99,7 +99,7 @@ window.addEventListener('submit', (event) => {
         </div>
         `;
 
-        orderList.insertAdjacentHTML("beforeend", newOrder);
+        orderList.innerHTML += newOrder;
         modalOuter.classList.remove('open');
         form.reset();
     }
@@ -107,28 +107,25 @@ window.addEventListener('submit', (event) => {
 
 
 // Added an event listener to the detail buton to show the order information.
+const showModalDetail = (order) => {
+    const {dish, size, amount} = order.dataset;
+    const orderName = order.querySelector('.title').textContent;
+
+    const detailHTML = `
+        <h4>${orderName}</h4>
+        <h5>Order:</h5>
+        <p>${dish} ${size} ${amount}</p>
+    `;
+
+    modalInner.innerHTML = detailHTML;
+    modalOuter.classList.add('open');
+};
+
 detailsButton.addEventListener('click', (event) => {
     event.preventDefault();
-    if (event.target.matches('.details')) {
-        const form = event.target;
-        const name = form.name.value;
-        const dish = form.dish.value;
-        const size = form.size.value;
-        const amount = form.amount.value;
-
-        const myHTML = `
-        <div class="order-list">
-            <div class="order">
-                <span>${name}</span>
-                <p>Order:</p>
-                <span>${size} ${amount} ${dish}</span>
-            </div>
-        </div>
-        `;
-
-        orderList.insertAdjacentHTML('beforeend', myHTML);
-        modalOuter.classList.add('open');
-        console.log(myHTML);
+    if (event.target.matches('button.details')) {
+        const bttn = event.target.closest('.order');
+        showModalDetail();
     }
 });
 
